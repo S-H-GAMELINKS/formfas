@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        
+
         return view('posts.index', compact('posts'));
     }
 
@@ -26,7 +26,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $category = ['L' => 'Large', 'S' => 'Small'];
+        return view('posts.create', compact('category'));
     }
 
     /**
@@ -37,7 +38,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->category = $request->input('category');
+        $post->save();
+
+        return redirect()->route('posts.show', ['id' => $post->id])->with('message', 'Post was successfully created.');
     }
 
     /**
